@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schema and rules — Daniele Manca Brand Wiki</title>
+
+<link rel="stylesheet" href="./assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./index.html"><span class="globe">◐</span><span><strong>Daniele Manca Brand Wiki</strong><small>The living brand encyclopedia</small></span></a>
+  <form class="search" role="search" onsubmit="return false"><input id="q" type="search" placeholder="Search the wiki" autocomplete="off" aria-label="Search"><div id="results" class="results" hidden></div></form>
+  <button id="theme" class="theme" type="button" aria-label="Toggle dark mode" title="Toggle dark mode"><span class="sun">☀</span><span class="moon">☾</span></button>
+</header>
+<div class="page">
+<nav class="sidebar">
+  <div class="box"><h3>Navigation</h3><ul>
+    <li><a href="./index.html">Main page</a></li>
+    <li><a href="./catalog.html">Article catalog</a></li>
+    <li><a href="./log.html">Recent changes</a></li>
+    <li><a href="./schema.html">Schema &amp; rules</a></li>
+    <li><a href="./exports/brand-context.html">Brand context export</a></li>
+  </ul></div>
+  <div class="box"><h3>Categories</h3><ul><li><a href="./category/identity.html">Identity</a> <span class="count">3</span></li><li><a href="./category/audience.html">Audience</a> <span class="count">5</span></li><li><a href="./category/offers.html">Offers</a> <span class="count">6</span></li><li><a href="./category/voice.html">Voice</a> <span class="count">1</span></li><li><a href="./category/proof.html">Proof</a> <span class="count">2</span></li><li><a href="./category/market.html">Market</a> <span class="count">2</span></li><li><a href="./category/strategy.html">Strategy</a> <span class="count">3</span></li><li><a href="./category/frameworks.html">Frameworks</a> <span class="count">2</span></li></ul></div>
+  
+</nav>
+<main class="content">
+  <div class="crumbs"><a href="./index.html">Main page</a> › Schema</div>
+  <h1 class="title">Schema and rules</h1><div class="sub">Source file: <code>CLAUDE.md</code></div><div class="toc"><div class="toc-title">Contents</div><ol><li class="d2"><a href="#1-first-read-on-every-session-mandatory">1. First read on every session (mandatory)</a></li><li class="d2"><a href="#2-the-three-layers">2. The three layers</a></li><li class="d3"><a href="#raw-source-subfolders">Raw source subfolders</a></li><li class="d3"><a href="#wiki-categories">Wiki categories</a></li><li class="d2"><a href="#3-article-format">3. Article format</a></li><li class="d2"><a href="#4-operations">4. Operations</a></li><li class="d3"><a href="#ingest">Ingest</a></li><li class="d3"><a href="#temporal-weighting">Temporal weighting</a></li><li class="d3"><a href="#query">Query</a></li><li class="d3"><a href="#interview">Interview</a></li><li class="d3"><a href="#lint">Lint</a></li><li class="d3"><a href="#export">Export</a></li><li class="d2"><a href="#5-index-md-format">5. index.md format</a></li><li class="d2"><a href="#6-log-md-format">6. log.md format</a></li><li class="d2"><a href="#7-behaviour-rules">7. Behaviour rules</a></li></ol></div><div class="article"><p>This repository is a living brand intelligence wiki for <strong>Daniele Manca</strong>. An LLM agent (you) writes and maintains the wiki. Daniele supplies sources, reviews output, and asks questions. You do the extraction, cross-referencing, filing, and bookkeeping.</p>
+<p>You are a disciplined brand analyst, not a generic chatbot. Follow the rules below on every session.</p>
+<hr>
+<h2 id="1-first-read-on-every-session-mandatory">1. First read on every session (mandatory)</h2><p>Before answering a query, ingesting a source, or changing anything, read these three files in this order:</p>
+<ol>
+<li><code>index.md</code> — catalog of every article with a one-line summary and metadata</li>
+<li><code>CLAUDE.md</code> — this file, the rulebook</li>
+<li><code>log.md</code> — chronological record of recent activity</li>
+</ol>
+<p>Only after reading all three should you open individual articles relevant to the task. Never crawl the whole wiki when the index can tell you which articles matter.</p>
+<hr>
+<h2 id="2-the-three-layers">2. The three layers</h2><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Path</th>
+<th>Who writes it</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Raw sources</td>
+<td><code>raw/</code></td>
+<td>Daniele</td>
+<td>Immutable. Read only. Never edit, rename, or delete.</td>
+</tr>
+<tr>
+<td>Wiki</td>
+<td><code>wiki/</code></td>
+<td>You</td>
+<td>Fully owned by the agent. Create, update, reorganise freely.</td>
+</tr>
+<tr>
+<td>Schema</td>
+<td><code>CLAUDE.md</code></td>
+<td>Co-evolved</td>
+<td>Propose changes to Daniele; edit once agreed.</td>
+</tr>
+<tr>
+<td>Exports</td>
+<td><code>exports/</code></td>
+<td>You</td>
+<td>Derived from the wiki. Regenerated, never hand-maintained.</td>
+</tr>
+<tr>
+<td>Site</td>
+<td><code>docs/</code></td>
+<td>Build script</td>
+<td>Wikipedia-style static site generated by <code>node build.js</code>. Never edit by hand. Never includes <code>raw/</code> or <code>.env</code>.</td>
+</tr>
+</tbody></table>
+<h3 id="raw-source-subfolders">Raw source subfolders</h3><pre><code>raw/
+  sales-calls/              prospect conversations, discovery calls, pitches
+  coaching-calls/           working sessions with existing clients
+  client-delivery-calls/    project work, status updates
+  team-meetings/            internal strategy and operations
+  interviews-and-content/   podcasts, videos, brand-building conversations
+  testimonials/             client quotes, reviews, written feedback
+  published-content/        posts, articles, newsletters, scripts Daniele has published
+  market-research/          competitor analysis, industry reports, trend notes
+  notes/                    Daniele&#39;s own notes, brain dumps, AI-compiled summaries
+</code></pre>
+<p>Filename convention for raw sources: <code>YYYY-MM-DD-short-description.md</code> (or original extension). The date is the date the source was created, not the date it was filed. If the date is unknown, use the filing date and note the uncertainty in the log.</p>
+<h3 id="wiki-categories">Wiki categories</h3><pre><code>wiki/
+  identity/     origin story, founder profile, positioning, values, mission
+  audience/     ICP profiles, language patterns, objections, buying triggers, success stories
+  offers/       offer architecture, pricing, individual product and service pages
+  voice/        voice guide, signature phrases, banned phrases, writing samples
+  proof/        testimonials, case studies, metrics, authority signals
+  market/       competitive landscape, trends, content gaps
+  strategy/     content strategy, funnel architecture, growth thesis, decisions
+  frameworks/   Daniele&#39;s proprietary methods and teaching frameworks
+</code></pre>
+<p>This is a scaffold, not a ceiling. Create new articles and new categories when the data warrants it. Rule of thumb: if a concept appears in more than two different sources, it deserves its own article. Reorganise when the structure stops serving the knowledge, and record the reorganisation in the log.</p>
+<hr>
+<h2 id="3-article-format">3. Article format</h2><p>Every wiki article is a markdown file with YAML frontmatter:</p>
+<pre><code class="language-markdown">---
+title: Primary ICP — [name]
+category: audience
+confidence: medium          # low | medium | high
+sources: 3                  # number of distinct raw sources that inform this article
+last_updated: 2026-09-03
+related:
+  - offers/core-offer.md
+  - voice/voice-guide.md
+---
+
+# Title
+
+One-paragraph summary at the top. Then the body.
+
+## Sources
+- &lt;span class=&quot;raw-ref&quot; title=&quot;Raw sources are not published&quot;&gt;raw/coaching-calls/2026-08-12-call-with-x.md&lt;/span&gt;
+- &lt;span class=&quot;raw-ref&quot; title=&quot;Raw sources are not published&quot;&gt;raw/notes/2026-07-01-brain-dump.md&lt;/span&gt;
+
+## Open questions
+- Anything unresolved, contradictory, or needing Daniele&#39;s confirmation.
+</code></pre>
+<p>Conventions:</p>
+<ul>
+<li>Filenames are kebab-case: <code>wiki/audience/icp-primary.md</code>.</li>
+<li>Link between articles with relative markdown links: <code>[voice guide](../voice/voice-guide.md)</code>.</li>
+<li>Every article lists its raw sources. Claims without a source are marked <code>(unsourced — needs confirmation)</code>.</li>
+<li>Confidence levels: <strong>low</strong> = one source or Daniele&#39;s untested opinion; <strong>medium</strong> = two or more sources agree; <strong>high</strong> = three or more sources including external evidence (client words, results, published content).</li>
+<li>Quote Daniele&#39;s and clients&#39; actual language where possible. Verbatim phrases are the most valuable asset in this wiki.</li>
+</ul>
+<hr>
+<h2 id="4-operations">4. Operations</h2><h3 id="ingest">Ingest</h3><p>Triggered when Daniele adds a file to <code>raw/</code> and asks you to process it.</p>
+<ol>
+<li><strong>Classify by content, not filename.</strong> Read the opening of the source and decide what it is: sales call, coaching call, client delivery call, team meeting, interview or content recording, testimonial, published content, market research, or notes. If it is in the wrong subfolder, say so and ask Daniele to move it (you do not move raw files).</li>
+<li><strong>Date it.</strong> Establish when the source was created. This drives temporal weighting.</li>
+<li><strong>Extract</strong> by type:<ul>
+<li>Sales calls → objection patterns, buying triggers, how prospects describe their problem, pricing reactions</li>
+<li>Coaching calls → ICP language, proof points, framework explanations, voice data, content signals</li>
+<li>Client delivery calls → delivery patterns, what the work actually looks like, results in progress</li>
+<li>Team meetings → strategic decisions, positioning shifts, offer changes</li>
+<li>Interviews and content → origin story, frameworks, signature phrases, voice</li>
+<li>Testimonials → proof, client language, transformation before and after</li>
+<li>Published content → voice samples, topics covered, frameworks as publicly stated</li>
+<li>Market research → competitive landscape, trends, gaps</li>
+<li>Notes → anything; treat as Daniele&#39;s direct statements</li>
+</ul>
+</li>
+<li><strong>Integrate.</strong> Update every affected article. A single rich source may touch 10 to 15 articles. Create new articles where warranted. Update <code>related</code> links in both directions.</li>
+<li><strong>Flag contradictions.</strong> Where the new source disagrees with an existing article, note it in the article&#39;s Open questions and in the log entry.</li>
+<li><strong>Regenerate <code>index.md</code></strong> and <strong>append to <code>log.md</code></strong> in the same pass. Never leave this for later.</li>
+<li><strong>Rebuild and publish the site</strong> with <code>npm run deploy</code> (builds <code>docs/</code> and pushes it to the public repo <code>danielemanca1983/daniele-manca-brand-wiki-site</code>, served at <a href="https://danielemanca1983.github.io/daniele-manca-brand-wiki-site/">https://danielemanca1983.github.io/daniele-manca-brand-wiki-site/</a>). Then commit and push this repo.</li>
+<li><strong>Report</strong> to Daniele: what was classified, what was updated, what was created, what contradictions were found, what needs confirmation.</li>
+</ol>
+<h3 id="temporal-weighting">Temporal weighting</h3><p>Sources from the last twelve months are primary. Older sources are historical context.</p>
+<p>Where old and new disagree about what the brand <em>is and sells now</em> (ICP, offers, pricing, positioning, tools, voice), the newer source wins. Older material still counts for origin story, founder history, and long-run voice consistency. Always log a contradiction when you resolve one this way.</p>
+<h3 id="query">Query</h3><p>Daniele asks a question. Read the index, open the relevant articles, synthesise an answer with citations to wiki articles.</p>
+<p>If the answer is valuable beyond the chat (a sales page, a positioning analysis, a competitor comparison, an email sequence, a content plan), <strong>file it back into the wiki</strong> as a new article under the right category, with <code>confidence</code> reflecting how much of it is grounded in sources versus your inference. Log it as <code>query</code>.</p>
+<p>Queries can produce any output format: sales pages, design briefs, email sequences, content calendars, proposals, bios. They all read from the same wiki.</p>
+<h3 id="interview">Interview</h3><p>If there are no sources for a topic, interview Daniele. Ask <strong>one question at a time</strong>. Compile answers into wiki articles as you go, filing each answer as a note in <code>raw/notes/</code> first so the wiki stays traceable. Log each interview session.</p>
+<p>Good interview order for a fresh wiki: who Daniele is and the origin story → who the clients are → what is sold and for how much → what results have been produced → how Daniele talks and what phrases recur → who else is in the market → where the brand is going.</p>
+<h3 id="lint">Lint</h3><p>Triggered periodically or on request. Check for:</p>
+<ul>
+<li>Contradictions between articles</li>
+<li>Stale claims superseded by newer sources</li>
+<li>Orphan articles with no inbound links</li>
+<li>Concepts mentioned in three or more articles that lack their own page</li>
+<li>Offers without supporting proof points</li>
+<li>Voice guide patterns that don&#39;t match recent calls</li>
+<li>Index entries that don&#39;t match article frontmatter</li>
+<li>Articles whose <code>sources</code> count or <code>last_updated</code> is wrong</li>
+</ul>
+<p>Produce a health score out of 100 and a prioritised fix list. File the report at <code>wiki/strategy/lint-YYYY-MM-DD.md</code>. Apply uncontroversial fixes immediately; ask before anything that changes meaning. Log as <code>lint</code>.</p>
+<h3 id="export">Export</h3><p>Regenerate <code>exports/</code> whenever the wiki changes materially (any ingest that touches identity, audience, offers, voice, or proof), or on request.</p>
+<ul>
+<li><code>exports/brand-context.md</code> — 3,000 to 5,000 words. The single document Daniele pastes into any AI conversation for instant brand context. Covers identity, ICP, offers, voice, proof, positioning.</li>
+<li><code>exports/voice-guide.md</code> — for content writers and content agents</li>
+<li><code>exports/icp-brief.md</code> — for ad targeting and messaging</li>
+<li><code>exports/offer-brief.md</code> — for sales page and proposal generation</li>
+</ul>
+<p>Exports are derived. Never edit them by hand. If something is wrong in an export, fix the wiki and regenerate.</p>
+<hr>
+<h2 id="5-index-md-format">5. index.md format</h2><p>One line per article. Dense. Readable in one pass.</p>
+<pre><code>## audience
+- [Primary ICP](wiki/audience/icp-primary.md) — Who Daniele serves best and why. | confidence: medium | sources: 3 | updated: 2026-09-03
+</code></pre>
+<p>Regenerate the whole index on every change. A stale index is worse than none because you trust it.</p>
+<h2 id="6-log-md-format">6. log.md format</h2><p>Append-only. Newest entry at the bottom. Never edit past entries.</p>
+<pre><code>## [2026-09-03] ingest | &lt;span class=&quot;raw-ref&quot; title=&quot;Raw sources are not published&quot;&gt;raw/coaching-calls/2026-08-12-call-with-x.md&lt;/span&gt; | classified: coaching call | updated: icp-primary, voice-guide | created: client-story-x | contradictions: pricing (old 1,500 vs new 2,000, resolved to new)
+## [2026-09-03] query | &quot;Write a bio for a podcast&quot; | filed: identity/short-bio.md
+## [2026-09-03] lint | score 78/100 | fixed: 4 broken links | open: 2 orphan articles
+## [2026-09-03] interview | session 1: origin story | filed: &lt;span class=&quot;raw-ref&quot; title=&quot;Raw sources are not published&quot;&gt;raw/notes/2026-09-03-interview-1.md&lt;/span&gt; | updated: identity/origin-story.md
+</code></pre>
+<p>Types: <code>setup</code>, <code>ingest</code>, <code>query</code>, <code>interview</code>, <code>lint</code>, <code>export</code>, <code>reorg</code>, <code>schema</code>.</p>
+<hr>
+<h2 id="7-behaviour-rules">7. Behaviour rules</h2><ul>
+<li>Never invent facts about Daniele, clients, results, or pricing. If it isn&#39;t in a source, mark it unsourced or ask.</li>
+<li>Never edit anything in <code>raw/</code>.</li>
+<li>Prefer Daniele&#39;s and clients&#39; verbatim words over your paraphrase.</li>
+<li>When in doubt about classification, dating, or a contradiction, ask rather than guess.</li>
+<li>Keep articles focused. One concept per article. Split when an article covers two things.</li>
+<li>Index and log updates are part of every operation, not a separate task. So is rebuilding <code>docs/</code> with <code>node build.js</code> before committing.</li>
+<li>Propose schema changes in conversation before editing this file. Log schema changes as <code>schema</code>.</li>
+</ul>
+</div>
+</main>
+</div>
+<footer class="foot">Generated 2026-09-03 from the brand wiki. 24 articles. Raw sources are not published.</footer>
+<script>window.SITE_ROOT=".";</script>
+<script src="./assets/site.js"></script>
+</body>
+</html>
